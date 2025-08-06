@@ -1,8 +1,9 @@
 import { articles } from '../../lib/articles';
 import { notFound } from 'next/navigation';
 
-export default function ArticlePage({ params }: { params: { id: string } }) {
-  const article = articles.find(a => a.id === parseInt(params.id));
+export default async function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const article = articles.find(a => a.id === parseInt(id));
 
   if (!article) {
     notFound();
@@ -14,9 +15,9 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <div className="flex items-center mb-6">
             <span className="px-3 py-1 text-xs font-semibold text-violet-600 dark:text-violet-300 bg-violet-100 dark:bg-violet-900/30 rounded-full">
-              {article.category}
+              {article.source}
             </span>
-            <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">{article.readTime}</span>
+            <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">Article #{article.id}</span>
           </div>
           
           <h1 className="text-4xl font-bold mb-6 text-gray-800 dark:text-white">
@@ -26,17 +27,20 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
           <div className="flex items-center mb-8">
             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500" />
             <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{article.author}</p>
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">News Article</p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                {new Date(article.date).toLocaleDateString()}
+                {article.processedDate}
               </p>
             </div>
           </div>
           
           <div className="prose dark:prose-invert max-w-none">
             <p className="text-gray-600 dark:text-gray-300">
-              {article.content}
+              {article.description}
             </p>
+            <a href={article.link} target="_blank" rel="noopener noreferrer" className="inline-block mt-4 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
+              Read Full Article
+            </a>
           </div>
         </div>
       </div>

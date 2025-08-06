@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 import requests
 import csv
 from datetime import datetime
 import os
 
-API_KEY = "pub_79001194bab608349b3061a81f5c91566598d"
+API_KEY = os.getenv("NEWS_API_KEY", "pub_79001194bab608349b3061a81f5c91566598d")
 NEWS_URL = "https://newsdata.io/api/1/news"
 
 NEGATIVE_KEYWORDS = [
@@ -21,7 +22,7 @@ def fetch_positive_news(query="IT innovation", category="technology", language="
 
     response = requests.get(NEWS_URL, params=params)
     if response.status_code != 200:
-        print("❌ Error fetching data:", response.status_code)
+        print(f"[ERROR] Error fetching data: {response.status_code}")
         return []
 
     articles = response.json().get("results", [])
@@ -67,6 +68,6 @@ if __name__ == "__main__":
         os.makedirs(data_dir, exist_ok=True)
         
         save_to_csv(positive_articles, filename)
-        print(f"✅ Successfully fetched and saved {len(positive_articles)} positive articles to {filename}")
+        print(f"[SUCCESS] Successfully fetched and saved {len(positive_articles)} positive articles to {filename}")
     else:
-        print("🤷 No positive articles found.")
+        print("[WARNING] No positive articles found.")

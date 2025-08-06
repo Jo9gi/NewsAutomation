@@ -48,7 +48,7 @@ export default async function NewsList() {
         <h2 className="text-2xl font-semibold mb-4 text-center">Latest News</h2>
         {news.map((item, idx) => (
           <div key={idx} className="bg-white shadow rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+            <h3 className="text-lg font-bold mb-2 text-black">{item.title}</h3>
             <p className="mb-2 text-gray-700 line-clamp-3">{item.description}</p>
             <div className="flex items-center gap-4 text-sm mb-2">
               <SentimentBadge sentiment={item.Sentiment} />

@@ -1,14 +1,15 @@
+# -*- coding: utf-8 -*-
 import pandas as pd
 import datetime
 import os
 from newsdata_fetcher import fetch_positive_news
 
 def main():
-    print("🔍 Fetching positive IT innovation news from NewsData.io...")
+    print("[INFO] Fetching positive IT innovation news from NewsData.io...")
     news_list = fetch_positive_news()
 
     if not news_list:
-        print("😕 No positive news found.")
+        print("[WARNING] No positive news found.")
         return None
 
     df = pd.DataFrame(news_list)
@@ -30,11 +31,11 @@ def main():
         os.makedirs("data", exist_ok=True)
         df.to_csv(filename, index=False)
         
-        print(f"✅ Results saved to {filename}")
-        print(f"📊 Processed {len(df)} articles")
+        print(f"[SUCCESS] Results saved to {filename}")
+        print(f"[INFO] Processed {len(df)} articles")
         return df
     except Exception as e:
-        print("❌ Failed to save CSV:", e)
+        print(f"[ERROR] Failed to save CSV: {e}")
         return None
 
 if __name__ == "__main__":
