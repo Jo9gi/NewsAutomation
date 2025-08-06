@@ -101,8 +101,8 @@ export async function GET(request: Request) {
 
     // If force refresh is requested, trigger data fetch
     if (forceRefresh) {
-      console.log('🔄 Force refresh requested, triggering data fetch...');
-      await triggerDataFetch();
+      console.log('🔄 Force refresh requested, but Python execution disabled on serverless');
+      // await triggerDataFetch(); // Disabled for Vercel
       
       // Wait a moment for the file to be created
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -167,8 +167,9 @@ export async function GET(request: Request) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
 
-    // Trigger Python data fetching
-    const fetchSuccess = await triggerDataFetch();
+    // Skip Python execution on Vercel (not supported)
+    console.log('⚠️ Python execution skipped on serverless environment');
+    const fetchSuccess = false;
     
     if (fetchSuccess) {
       // Wait for the file to be created
